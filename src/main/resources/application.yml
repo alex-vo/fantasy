@@ -1,0 +1,6 @@
+spring:
+  data:
+    rest:
+      base-path: v1/admin
+
+#todo base path for normal rest guys
