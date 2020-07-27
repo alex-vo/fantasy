@@ -1,15 +1,25 @@
 package com.example.fantasy.controller.user;
 
+import com.example.fantasy.dto.PlayerDTO;
+import com.example.fantasy.dto.PlayerForUserDTO;
 import com.example.fantasy.dto.TransferPlacementDTO;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.fantasy.service.PlayerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
 public class PlayerController {
+
+    private final PlayerService playerService;
+
+    @PutMapping("/v1/player/:playerId")
+    public void updatePlayer(@PathVariable Long playerId,
+                             @Valid @RequestBody PlayerForUserDTO playerForUserDTO) {
+        playerService.updatePlayer(1L, playerId, playerForUserDTO);
+    }
 
     @PostMapping("/v1/player/:playerId/place-on-transfer")
     public void placePlayerOnTransfer(@PathVariable Long playerId,

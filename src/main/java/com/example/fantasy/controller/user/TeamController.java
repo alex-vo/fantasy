@@ -16,7 +16,7 @@ public class TeamController {
     @GetMapping("/v1/team")
     @PreAuthorize("isAnonymous()")
     public TeamDTO getTeamInfo() {
-        return teamService.getTeamInfo(4L);
+        return teamService.getTeamInfo(1L);
     }
 
 }

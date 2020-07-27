@@ -4,7 +4,7 @@ import com.example.fantasy.entity.Player;
 import com.example.fantasy.entity.PlayerPosition;
 import com.example.fantasy.entity.Team;
 import com.example.fantasy.entity.User;
-import com.example.fantasy.repository.admin.TeamForAdminRepository;
+import com.example.fantasy.repository.admin.UserForAdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
@@ -17,23 +17,24 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class StartupService {
 
-    private final TeamForAdminRepository teamForAdminRepository;
+    private final UserForAdminRepository userForAdminRepository;
 
-    @EventListener
+//    @EventListener
     public void appReady(ApplicationStartedEvent e) {
-        User owner = prepareUser("asdasd@asdasd.lv", "2$B$asdkamsdkasmdka23423ojmk23j4n2m3");
+        User user = prepareUser("asdasd@asdasd.lv", "2$B$asdkamsdkasmdka23423ojmk23j4n2m3");
 
-        Team team = prepareTeam("MU", "England", owner);
+        Team team = prepareTeam("MU", "England"/*, owner*/);
+        user.setTeam(team);
         preparePlayer(team, "John", "Doe", "England", LocalDate.of(2000, 1, 1), BigDecimal.valueOf(1000), PlayerPosition.DEFENDER);
         preparePlayer(team, "John1", "Doe1", "England", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(2000), PlayerPosition.ATTACKER);
-        teamForAdminRepository.save(team);
+        userForAdminRepository.save(user);
     }
 
-    private Team prepareTeam(String name, String country, User owner) {
+    private Team prepareTeam(String name, String country/*, User owner*/) {
         Team team = new Team();
         team.setName(name);
         team.setCountry(country);
-        team.setOwner(owner);
+//        team.setOwner(owner);
         return team;
     }
 

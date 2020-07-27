@@ -28,10 +28,10 @@ public class Team {
     @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
     User owner;
 
-    public void setOwner(User owner) {
-        this.owner = owner;
-        if (owner != null) {
-            owner.setTeam(this);
-        }
-    }
+//    public void setOwner(User owner) {
+//        this.owner = owner;
+//        if (owner != null) {
+//            owner.setTeam(this);
+//        }
+//    }
 }

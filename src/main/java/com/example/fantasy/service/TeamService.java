@@ -1,6 +1,8 @@
 package com.example.fantasy.service;
 
 import com.example.fantasy.dto.TeamDTO;
+import com.example.fantasy.dto.TeamForUserDTO;
+import com.example.fantasy.exception.BadRequestException;
 import com.example.fantasy.exception.NotFoundException;
 import com.example.fantasy.mapper.TeamDTOMapper;
 import com.example.fantasy.model.TeamModel;
@@ -19,6 +21,14 @@ public class TeamService {
         TeamModel team = teamForAdminRepository.findByOwnerId(userId)
                 .orElseThrow(NotFoundException::new);
         return teamDTOMapper.toTeamDTO(team);
+    }
+
+    public void updateTeam(Long ownerId, Long teamId, TeamForUserDTO teamForUserDTO) {
+        int updatedRows = teamForAdminRepository.updateTeamInformation(teamId, ownerId, teamForUserDTO.getName(),
+                teamForUserDTO.getCountry());
+        if (updatedRows != 1) {
+            throw new BadRequestException();
+        }
     }
 
 }
