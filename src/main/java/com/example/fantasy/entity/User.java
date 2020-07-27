@@ -2,6 +2,7 @@ package com.example.fantasy.entity;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString(exclude = "team")
 public class User {
     @Id
     @GeneratedValue
@@ -19,6 +21,6 @@ public class User {
     String passwordHash;
     @Column(nullable = false)
     Boolean blocked;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     Team team;
 }

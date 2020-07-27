@@ -2,17 +2,19 @@ package com.example.fantasy.entity;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@EqualsAndHashCode(exclude = "owner")
+@ToString(exclude = "owner")
 public class Team {
     @Id
     @GeneratedValue
@@ -21,5 +23,15 @@ public class Team {
     String name;
     @Column(nullable = false)
     String country;
-    List<Player> players;
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    List<Player> players = new ArrayList<>();
+    @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+    User owner;
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+        if (owner != null) {
+            owner.setTeam(this);
+        }
+    }
 }
