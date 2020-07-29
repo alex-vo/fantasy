@@ -14,5 +14,6 @@ public class TeamDTO {
     String name;
     String country;
     BigDecimal value;
+    BigDecimal balance;
     List<PlayerDTO> players;
 }

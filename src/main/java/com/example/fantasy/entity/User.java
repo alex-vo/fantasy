@@ -24,8 +24,6 @@ public class User {
     Boolean blocked;
     @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     Team team;
-    @Column(nullable = false)
-    BigDecimal balance;
 
     public void setTeam(Team team) {
         this.team = team;

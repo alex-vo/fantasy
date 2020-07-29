@@ -31,6 +31,7 @@ public class Player {
     Team team;
     @Column(nullable = false)
     Boolean isOnTransfer;
+    BigDecimal transferPrice;
     @Column(nullable = false)
     PlayerPosition position;
 

@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @RepositoryRestResource(path = "team")
@@ -25,5 +26,14 @@ public interface TeamForAdminRepository extends PagingAndSortingRepository<Team,
             "where t.id=:id and t.owner.id=:ownerId")
     int updateTeamInformation(@Param("id") Long id, @Param("ownerId") Long ownerId, @Param("name") String name,
                               @Param("country") String country);
+
+    @Modifying
+    @Query("update Team t set t.balance = t.balance + :sum where t.id = :id")
+    int topUpBalance(@Param("id") Long id, @Param("sum") BigDecimal sum);
+
+    //TODO maybe make idempotent?
+    @Modifying
+    @Query("update Team t set t.balance = t.balance - :sum where t.id = :id")
+    int reduceBalance(@Param("id") Long id, @Param("sum") BigDecimal sum);
 
 }

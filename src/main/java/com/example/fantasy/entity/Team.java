@@ -7,6 +7,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class Team {
     List<Player> players = new ArrayList<>();
     @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
     User owner;
+    @Column(nullable = false)
+    BigDecimal balance;
 
 //    public void setOwner(User owner) {
 //        this.owner = owner;

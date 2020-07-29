@@ -4,6 +4,6 @@ spring:
       base-path: v1/admin
   jpa:
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true

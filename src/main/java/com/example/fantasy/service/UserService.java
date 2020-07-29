@@ -35,7 +35,6 @@ public class UserService {
         User user = userMapper.toUser(newUserDTO);
         Team team = createInitialTeam();
         user.setTeam(team);
-        user.setBalance(BigDecimal.valueOf(5_000_000));
         userRepository.save(user);
     }
 
@@ -43,7 +42,7 @@ public class UserService {
         Team team = new Team();
         team.setName(RandomStringUtils.randomAlphabetic(5));
         team.setCountry("England");
-//        team.setOwner(owner);
+        team.setBalance(BigDecimal.valueOf(5_000_000));
         long eighteenYearsAgo = LocalDate.now().minusYears(18).toEpochDay();
         long fortyYearsAgo = LocalDate.now().minusYears(40).toEpochDay();
         ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
