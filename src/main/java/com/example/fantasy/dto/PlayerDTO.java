@@ -15,7 +15,7 @@ public class PlayerDTO {
     String firstName;
     String lastName;
     String country;
-    LocalDate dateOfBirth;
+    Integer age;
     BigDecimal value;
     Boolean isOnTransfer;
     PlayerPosition position;

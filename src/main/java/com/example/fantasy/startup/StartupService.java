@@ -23,8 +23,9 @@ public class StartupService {
 
         Team team = prepareTeam("MU", "England");
         user.setTeam(team);
-        preparePlayer(team, "John", "Doe", "England", LocalDate.of(2000, 1, 1), BigDecimal.valueOf(1000), PlayerPosition.DEFENDER);
-        preparePlayer(team, "John1", "Doe1", "England", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(2000), PlayerPosition.ATTACKER);
+        preparePlayer(team, "John", "Zz", "England", LocalDate.of(2000, 1, 1), BigDecimal.valueOf(1000), PlayerPosition.DEFENDER);
+        preparePlayer(team, "John1", "Aa", "Wales", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(2000), PlayerPosition.ATTACKER);
+        preparePlayer(team, "Stan", "Bb", "Wales", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(1995), PlayerPosition.GOALKEEPER);
         userRepository.save(user);
     }
 
@@ -53,7 +54,7 @@ public class StartupService {
         player.setCountry(country);
         player.setDateOfBirth(dateOfBirth);
         player.setValue(value);
-        player.setIsOnTransfer(false);
+        player.setIsOnTransfer(true);
         player.setPosition(position);
         player.setTeam(team);
         return player;

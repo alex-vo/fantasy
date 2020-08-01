@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -22,8 +23,9 @@ public interface SecuredTeamRepository extends PagingAndSortingRepository<Team, 
     Optional<TeamModel> findByOwnerId(@Param("ownerId") Long ownerId);
 
     @Modifying
-    @Query("update Team t set t.name=:name, t.country=:country " +
-            "where t.id=:id and t.owner.id=:ownerId")
+    @Transactional
+    @Query("update Team t set t.name = :name, t.country = :country " +
+            "where t.id = (select t.id from Team t where t.id = :id and t.owner.id = :ownerId)")
     int updateTeamInformation(@Param("id") Long id, @Param("ownerId") Long ownerId, @Param("name") String name,
                               @Param("country") String country);
 
