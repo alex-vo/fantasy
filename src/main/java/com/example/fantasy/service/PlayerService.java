@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +47,8 @@ public class PlayerService {
         ensureBuyerHasEnoughBalance(buyer, player.getTransferPrice());
         teamForAdminRepository.topUpBalance(player.getTeam().getId(), player.getTransferPrice());
         teamForAdminRepository.reduceBalance(buyer.getTeam().getId(), player.getTransferPrice());
-        playerForAdminRepository.addPlayerToTeam(playerId, buyer.getTeam());
+        playerForAdminRepository.performTransfer(playerId, buyer.getTeam(),
+                BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10, 101)).multiply(player.getValue()));
     }
 
     private void ensureBuyerHasEnoughBalance(User buyer, BigDecimal price) {

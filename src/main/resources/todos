@@ -2,3 +2,6 @@ sequences
 base path for normal rest guys
 standard error codes/messages
 validations
+country from lib
+db constraints
+spaces in queries

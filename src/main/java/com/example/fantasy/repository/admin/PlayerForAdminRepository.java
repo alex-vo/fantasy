@@ -35,7 +35,7 @@ public interface PlayerForAdminRepository extends JpaRepository<Player, Long> {
     Optional<Player> findPlayerOnTransferById(@Param("id") Long id);
 
     @Modifying
-    @Query("update Player p set p.team=:team, p.isOnTransfer=false, p.transferPrice=null where p.id=:id")
-    int addPlayerToTeam(@Param("id") Long id, @Param("team") Team team);
+    @Query("update Player p set p.team=:team, p.isOnTransfer=false, p.transferPrice=null where p.id=:id, p.value=:newValue")
+    int performTransfer(@Param("id") Long id, @Param("team") Team team, @Param("newValue") BigDecimal newValue);
 
 }
