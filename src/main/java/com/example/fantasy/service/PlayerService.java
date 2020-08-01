@@ -5,9 +5,9 @@ import com.example.fantasy.entity.Player;
 import com.example.fantasy.entity.User;
 import com.example.fantasy.exception.BadRequestException;
 import com.example.fantasy.exception.NotFoundException;
-import com.example.fantasy.repository.admin.PlayerForAdminRepository;
-import com.example.fantasy.repository.admin.TeamForAdminRepository;
-import com.example.fantasy.repository.admin.UserForAdminRepository;
+import com.example.fantasy.repository.admin.SecuredPlayerRepository;
+import com.example.fantasy.repository.admin.SecuredTeamRepository;
+import com.example.fantasy.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +19,12 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class PlayerService {
 
-    private final PlayerForAdminRepository playerForAdminRepository;
-    private final UserForAdminRepository userForAdminRepository;
-    private final TeamForAdminRepository teamForAdminRepository;
+    private final SecuredPlayerRepository securedPlayerRepository;
+    private final UserRepository userRepository;
+    private final SecuredTeamRepository securedTeamRepository;
 
     public void updatePlayer(Long ownerId, Long playerId, PlayerForUserDTO playerForUserDTO) {
-        int updatedRows = playerForAdminRepository.updatePlayerInformation(playerId, ownerId, playerForUserDTO.getFirstName(),
+        int updatedRows = securedPlayerRepository.updatePlayerInformation(playerId, ownerId, playerForUserDTO.getFirstName(),
                 playerForUserDTO.getLastName(), playerForUserDTO.getCountry());
         if (updatedRows != 1) {
             throw new BadRequestException();
@@ -32,7 +32,7 @@ public class PlayerService {
     }
 
     public void placePlayerOnTransfer(Long ownerId, Long playerId, BigDecimal price) {
-        int updatedRows = playerForAdminRepository.placePlayerOnTransfer(playerId, ownerId, price);
+        int updatedRows = securedPlayerRepository.placePlayerOnTransfer(playerId, ownerId, price);
         if (updatedRows != 1) {
             throw new BadRequestException();
         }
@@ -40,14 +40,14 @@ public class PlayerService {
 
     @Transactional
     public void buyPlayer(Long buyerId, Long playerId) {
-        User buyer = userForAdminRepository.findById(buyerId)
+        User buyer = userRepository.findById(buyerId)
                 .orElseThrow(NotFoundException::new);
-        Player player = playerForAdminRepository.findPlayerOnTransferById(playerId)
+        Player player = securedPlayerRepository.findPlayerOnTransferById(playerId)
                 .orElseThrow(NotFoundException::new);
         ensureBuyerHasEnoughBalance(buyer, player.getTransferPrice());
-        teamForAdminRepository.topUpBalance(player.getTeam().getId(), player.getTransferPrice());
-        teamForAdminRepository.reduceBalance(buyer.getTeam().getId(), player.getTransferPrice());
-        playerForAdminRepository.performTransfer(playerId, buyer.getTeam(),
+        securedTeamRepository.topUpBalance(player.getTeam().getId(), player.getTransferPrice());
+        securedTeamRepository.reduceBalance(buyer.getTeam().getId(), player.getTransferPrice());
+        securedPlayerRepository.performTransfer(playerId, buyer.getTeam(),
                 BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10, 101)).multiply(player.getValue()));
     }
 

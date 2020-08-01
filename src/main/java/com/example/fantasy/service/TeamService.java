@@ -6,7 +6,7 @@ import com.example.fantasy.exception.BadRequestException;
 import com.example.fantasy.exception.NotFoundException;
 import com.example.fantasy.mapper.TeamDTOMapper;
 import com.example.fantasy.model.TeamModel;
-import com.example.fantasy.repository.admin.TeamForAdminRepository;
+import com.example.fantasy.repository.admin.SecuredTeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +14,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TeamService {
 
-    private final TeamForAdminRepository teamForAdminRepository;
+    private final SecuredTeamRepository securedTeamRepository;
     private final TeamDTOMapper teamDTOMapper;
 
     public TeamDTO getTeamInfo(Long userId) {
-        TeamModel team = teamForAdminRepository.findByOwnerId(userId)
+        TeamModel team = securedTeamRepository.findByOwnerId(userId)
                 .orElseThrow(NotFoundException::new);
         return teamDTOMapper.toTeamDTO(team);
     }
 
     public void updateTeam(Long ownerId, Long teamId, TeamForUserDTO teamForUserDTO) {
-        int updatedRows = teamForAdminRepository.updateTeamInformation(teamId, ownerId, teamForUserDTO.getName(),
+        int updatedRows = securedTeamRepository.updateTeamInformation(teamId, ownerId, teamForUserDTO.getName(),
                 teamForUserDTO.getCountry());
         if (updatedRows != 1) {
             throw new BadRequestException();

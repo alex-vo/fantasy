@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @RepositoryRestResource(path = "player")
-public interface PlayerForAdminRepository extends JpaRepository<Player, Long> {
+public interface SecuredPlayerRepository extends JpaRepository<Player, Long> {
 
     @Modifying
     @Query("update Player p set p.firstName=:firstName, p.lastName=:lastName, p.country=:country " +
@@ -35,7 +35,7 @@ public interface PlayerForAdminRepository extends JpaRepository<Player, Long> {
     Optional<Player> findPlayerOnTransferById(@Param("id") Long id);
 
     @Modifying
-    @Query("update Player p set p.team=:team, p.isOnTransfer=false, p.transferPrice=null where p.id=:id, p.value=:newValue")
+    @Query("update Player p set p.team=:team, p.isOnTransfer=false, p.transferPrice=null, p.value=:newValue where p.id=:id")
     int performTransfer(@Param("id") Long id, @Param("team") Team team, @Param("newValue") BigDecimal newValue);
 
 }

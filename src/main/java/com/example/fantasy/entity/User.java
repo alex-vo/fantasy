@@ -6,7 +6,6 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -16,6 +15,8 @@ public class User {
     @Id
     @GeneratedValue
     Long id;
+    @Column(nullable = false)
+    Role role;
     @Column(nullable = false, unique = true)
     String email;
     @Column(nullable = false)

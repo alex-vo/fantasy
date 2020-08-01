@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @RepositoryRestResource(path = "team")
-public interface TeamForAdminRepository extends PagingAndSortingRepository<Team, Long> {
+public interface SecuredTeamRepository extends PagingAndSortingRepository<Team, Long> {
 
     @Query("select t " +
             "from Team t " +

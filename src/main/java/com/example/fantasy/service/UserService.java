@@ -1,14 +1,21 @@
 package com.example.fantasy.service;
 
+import com.example.fantasy.config.JwtTokenUtil;
 import com.example.fantasy.dto.NewUserDTO;
+import com.example.fantasy.dto.TokenDTO;
+import com.example.fantasy.dto.UserDTO;
 import com.example.fantasy.entity.Player;
 import com.example.fantasy.entity.PlayerPosition;
 import com.example.fantasy.entity.Team;
 import com.example.fantasy.entity.User;
+import com.example.fantasy.exception.WrongPasswordException;
 import com.example.fantasy.mapper.UserMapper;
-import com.example.fantasy.repository.admin.UserForAdminRepository;
+import com.example.fantasy.repository.admin.SecuredUserRepository;
+import com.example.fantasy.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,8 +35,20 @@ public class UserService {
             PlayerPosition.ATTACKER, 5
     );
 
-    private final UserForAdminRepository userRepository;
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
+
+    public TokenDTO signIn(UserDTO userDTO) {
+        String passwordHash = userRepository.findPasswordHashByEmail(userDTO.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException(""));
+        if (!passwordEncoder.matches(userDTO.getPassword(), passwordHash)) {
+            throw new WrongPasswordException();
+        }
+
+        return new TokenDTO(jwtTokenUtil.generateJwtToken(userDTO.getEmail()));
+    }
 
     public void createUser(NewUserDTO newUserDTO) {
         User user = userMapper.toUser(newUserDTO);
