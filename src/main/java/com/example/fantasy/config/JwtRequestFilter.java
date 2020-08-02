@@ -5,6 +5,7 @@ import com.example.fantasy.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
                 SecurityContextHolder.getContext().setAuthentication(new FantasyAuthToken(
-                        new FantasyPrincipal(user.getId(), email), null, List.of(user.getRole())));
+                        new FantasyPrincipal(user.getId(), email), null, List.of(new SimpleGrantedAuthority(user.getRole().name()))));
             }
         } catch (Exception e) {
             log.error("Cannot set user authentication", e);
