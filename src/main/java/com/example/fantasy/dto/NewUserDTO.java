@@ -10,5 +10,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewUserDTO extends UserDTO {
     String teamName;
+    String country;
 }
 

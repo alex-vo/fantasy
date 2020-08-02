@@ -6,6 +6,7 @@ import com.example.fantasy.model.PlayerModel;
 import com.example.fantasy.model.TeamModel;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.math.BigDecimal;
@@ -15,8 +16,10 @@ import java.time.Period;
 @Mapper(componentModel = "spring")
 public interface TeamDTOMapper {
 
+    @Mapping(target = "value", ignore = true)
     TeamDTO toTeamDTO(TeamModel teamModel);
 
+    @Mapping(target = "age", ignore = true)
     PlayerDTO toPlayerDTO(PlayerModel playerModel);
 
     @AfterMapping

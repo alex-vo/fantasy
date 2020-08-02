@@ -5,7 +5,6 @@ import com.example.fantasy.entity.PlayerPosition;
 import com.example.fantasy.entity.Team;
 import com.example.fantasy.entity.User;
 import com.example.fantasy.model.TeamModel;
-import com.example.fantasy.repository.admin.SecuredTeamRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,7 +17,7 @@ import java.util.List;
 public class TeamForUserRepositoryTest {
 
     @Autowired
-    SecuredTeamRepository securedTeamRepository;
+    TeamRepository teamRepository;
 
     @Test
     public void testRepo() {
@@ -29,10 +28,10 @@ public class TeamForUserRepositoryTest {
                 preparePlayer(team, "John", "Doe", "England", LocalDate.of(2000, 1, 1), BigDecimal.valueOf(1000), PlayerPosition.DEFENDER),
                 preparePlayer(team, "John1", "Doe1", "England", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(2000), PlayerPosition.ATTACKER)
         ));
-        securedTeamRepository.save(team);
-        Long ownerId = securedTeamRepository.findAll().iterator().next().getOwner().getId();
+        teamRepository.save(team);
+        Long ownerId = teamRepository.findAll().iterator().next().getOwner().getId();
 
-        TeamModel teamModel = securedTeamRepository.findByOwnerId(ownerId).orElseThrow();
+        TeamModel teamModel = teamRepository.findByOwnerId(ownerId).orElseThrow();
         assert teamModel.getName().equals("MU");
         assert teamModel.getPlayers().size() == 2;
         assert teamModel.getPlayers().get(0).getFirstName().equals("John");

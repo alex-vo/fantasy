@@ -1,28 +1,24 @@
 package com.example.fantasy.mapper;
 
 import com.example.fantasy.dto.NewUserDTO;
-import com.example.fantasy.entity.Team;
 import com.example.fantasy.entity.User;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Mapper(componentModel = "spring", uses = {PasswordEncoder.class})
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "blocked", constant = "false")
-    @Mapping(target = "passwordHash", expression = "java(passwordEncoder.encode(newUserDTO.getPassword()))")
+    @Mapping(target = "passwordHash", ignore = true)
     @Mapping(target = "team", ignore = true)
-    User toUser(NewUserDTO newUserDTO);
+    @Mapping(target = "role", constant = "ROLE_USER")
+    User toUser(NewUserDTO newUserDTO, @Context PasswordEncoder passwordEncoder);
 
     @AfterMapping
-    default void completeUserMapping(@MappingTarget User user, NewUserDTO newUserDTO) {
-        Team team = new Team();
-        team.setName(newUserDTO.getTeamName());
-        user.setTeam(team);
+    default void completeUserMapping(@MappingTarget User user, @Context PasswordEncoder passwordEncoder, NewUserDTO newUserDTO) {
+        user.setPasswordHash(passwordEncoder.encode(newUserDTO.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(newUserDTO.getPassword()));
     }
 
 }

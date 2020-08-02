@@ -51,16 +51,16 @@ public class UserService {
     }
 
     public void createUser(NewUserDTO newUserDTO) {
-        User user = userMapper.toUser(newUserDTO);
-        Team team = createInitialTeam();
+        User user = userMapper.toUser(newUserDTO, passwordEncoder);
+        Team team = createInitialTeam(newUserDTO.getTeamName(), newUserDTO.getCountry());
         user.setTeam(team);
         userRepository.save(user);
     }
 
-    private Team createInitialTeam() {
+    private Team createInitialTeam(String teamName, String country) {
         Team team = new Team();
-        team.setName(RandomStringUtils.randomAlphabetic(5));
-        team.setCountry("England");
+        team.setName(teamName);
+        team.setCountry(country);
         team.setBalance(BigDecimal.valueOf(5_000_000));
         long eighteenYearsAgo = LocalDate.now().minusYears(18).toEpochDay();
         long fortyYearsAgo = LocalDate.now().minusYears(40).toEpochDay();
