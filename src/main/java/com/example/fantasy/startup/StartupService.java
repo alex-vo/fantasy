@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +20,15 @@ public class StartupService {
 
     @EventListener
     public void appReady(ApplicationStartedEvent e) {
-        User user = prepareUser("aa@bb.lv", "123");
+        User user = prepareUser("aa@bb.lv", "123", Role.ROLE_USER);
+        User admin = prepareUser("admin@admin.lv", "123", Role.ROLE_ADMIN);
 
         Team team = prepareTeam("MU", "England");
         user.setTeam(team);
         preparePlayer(team, "John", "Zz", "England", LocalDate.of(2000, 1, 1), BigDecimal.valueOf(1000), PlayerPosition.DEFENDER);
         preparePlayer(team, "John1", "Aa", "Wales", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(2000), PlayerPosition.ATTACKER);
         preparePlayer(team, "Stan", "Bb", "Wales", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(1995), PlayerPosition.GOALKEEPER);
-        userRepository.save(user);
+        userRepository.saveAll(List.of(user, admin));
     }
 
     private Team prepareTeam(String name, String country/*, User owner*/) {
@@ -37,12 +39,12 @@ public class StartupService {
         return team;
     }
 
-    private User prepareUser(String email, String password) {
+    private User prepareUser(String email, String password, Role role) {
         User user = new User();
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(password));
         user.setBlocked(false);
-        user.setRole(Role.ROLE_USER);
+        user.setRole(role);
         return user;
     }
 

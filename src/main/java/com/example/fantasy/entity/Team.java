@@ -26,15 +26,8 @@ public class Team {
     String country;
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     List<Player> players = new ArrayList<>();
-    @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+    @OneToOne(mappedBy = "team", optional = false)
     User owner;
     @Column(nullable = false)
     BigDecimal balance;
-
-//    public void setOwner(User owner) {
-//        this.owner = owner;
-//        if (owner != null) {
-//            owner.setTeam(this);
-//        }
-//    }
 }

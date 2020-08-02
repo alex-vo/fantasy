@@ -7,8 +7,8 @@ import com.example.fantasy.entity.User;
 import com.example.fantasy.exception.BadRequestException;
 import com.example.fantasy.exception.NotFoundException;
 import com.example.fantasy.mapper.TeamDTOMapper;
-import com.example.fantasy.repository.admin.SecuredTeamRepository;
 import com.example.fantasy.repository.user.PlayerRepository;
+import com.example.fantasy.repository.user.TeamRepository;
 import com.example.fantasy.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final UserRepository userRepository;
-    private final SecuredTeamRepository securedTeamRepository;
+    private final TeamRepository teamRepository;
     private final TeamDTOMapper teamDTOMapper;
 
     public PlayerDTO getPlayer(Long playerId) {
@@ -62,8 +62,8 @@ public class PlayerService {
         Player player = playerRepository.findPlayerOnTransferById(playerId)
                 .orElseThrow(NotFoundException::new);
         ensureBuyerHasEnoughBalance(buyer, player.getTransferPrice());
-        securedTeamRepository.topUpBalance(player.getTeam().getId(), player.getTransferPrice());
-        securedTeamRepository.reduceBalance(buyer.getTeam().getId(), player.getTransferPrice());
+        teamRepository.topUpBalance(player.getTeam().getId(), player.getTransferPrice());
+        teamRepository.reduceBalance(buyer.getTeam().getId(), player.getTransferPrice());
         playerRepository.performTransfer(playerId, buyer.getTeam(),
                 BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10, 101)).multiply(player.getValue()));
     }

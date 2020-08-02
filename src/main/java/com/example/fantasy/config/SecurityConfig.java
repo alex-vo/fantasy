@@ -10,12 +10,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -25,6 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedHandler(new AccessDeniedExceptionHandler())
                 .and()
+                .addFilterBefore(jwtRequestFilter, SecurityContextHolderAwareRequestFilter.class)
+                .authorizeRequests()
+                .antMatchers("/v1/admin/**").hasAuthority("ROLE_ADMIN")
+                .and()
+//                .authorizeRequests().antMatchers("/v1/admin/**").hasAuthority("ADMIN")
+//                .and()
 //                .authorizeRequests().antMatchers("/**").authenticated()
 //                .antMatchers("/v1/account/**").anonymous()
 //                .and()

@@ -1,20 +1,17 @@
-package com.example.fantasy.repository.admin;
-
+package com.example.fantasy.repository.user;
 
 import com.example.fantasy.entity.Team;
 import com.example.fantasy.model.TeamModel;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
-@RepositoryRestResource(path = "team")
-public interface SecuredTeamRepository extends PagingAndSortingRepository<Team, Long> {
+public interface TeamRepository extends JpaRepository<Team, Long> {
 
     @Query("select t " +
             "from Team t " +

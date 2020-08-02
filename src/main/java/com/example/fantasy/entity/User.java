@@ -23,7 +23,7 @@ public class User {
     String passwordHash;
     @Column(nullable = false)
     Boolean blocked;
-    @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     Team team;
 
     public void setTeam(Team team) {

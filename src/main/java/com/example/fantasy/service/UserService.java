@@ -10,7 +10,6 @@ import com.example.fantasy.entity.Team;
 import com.example.fantasy.entity.User;
 import com.example.fantasy.exception.WrongPasswordException;
 import com.example.fantasy.mapper.UserMapper;
-import com.example.fantasy.repository.admin.SecuredUserRepository;
 import com.example.fantasy.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
