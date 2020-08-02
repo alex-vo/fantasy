@@ -11,3 +11,7 @@ spring:
 jwt:
   secret: abc123
   expiration: 600000
+
+server:
+  error:
+    include-message: always

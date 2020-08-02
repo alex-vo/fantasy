@@ -8,14 +8,15 @@ import com.example.fantasy.entity.Player;
 import com.example.fantasy.entity.PlayerPosition;
 import com.example.fantasy.entity.Team;
 import com.example.fantasy.entity.User;
-import com.example.fantasy.exception.WrongPasswordException;
 import com.example.fantasy.mapper.UserMapper;
 import com.example.fantasy.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -43,7 +44,7 @@ public class UserService {
         String passwordHash = userRepository.findPasswordHashByEmail(userDTO.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException(""));
         if (!passwordEncoder.matches(userDTO.getPassword(), passwordHash)) {
-            throw new WrongPasswordException();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong password");
         }
 
         return new TokenDTO(jwtTokenUtil.generateJwtToken(userDTO.getEmail()));
