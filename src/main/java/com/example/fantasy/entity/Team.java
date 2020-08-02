@@ -18,7 +18,7 @@ import java.util.List;
 @ToString(exclude = "owner")
 public class Team {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
     Long id;
     @Column(nullable = false)
     String name;

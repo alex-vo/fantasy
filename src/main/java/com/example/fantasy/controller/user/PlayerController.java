@@ -23,19 +23,19 @@ public class PlayerController {
 
     private final PlayerService playerService;
 
-    @GetMapping("/v1/player/{playerId}")
+    @GetMapping("/v1/user/player/{playerId}")
     public PlayerDTO getPlayer(@PathVariable Long playerId) {
         return playerService.getPlayer(playerId);
     }
 
-    @PutMapping("/v1/player/{playerId}")
+    @PutMapping("/v1/user/player/{playerId}")
     public void updatePlayer(FantasyAuthToken auth,
                              @PathVariable Long playerId,
                              @Valid @RequestBody UpdatePlayerDTO updatePlayerDTO) {
         playerService.updatePlayer(auth.getUserId(), playerId, updatePlayerDTO);
     }
 
-    @GetMapping("/v1/player/list-transfer")
+    @GetMapping("/v1/user/player/list-transfer")
     public Page<PlayerDTO> listPlayersOnTransfer(@RequestParam(required = false) String country,
                                                  @RequestParam(required = false) String teamName,
                                                  @RequestParam(required = false) String playerLastName,
@@ -48,14 +48,14 @@ public class PlayerController {
         return playerService.listPlayersOnTransfer(country, teamName, playerLastName, valueMin, valueMax, pageable);
     }
 
-    @PostMapping("/v1/player/{playerId}/place-on-transfer")
+    @PostMapping("/v1/user/player/{playerId}/place-on-transfer")
     public void placePlayerOnTransfer(FantasyAuthToken auth,
                                       @PathVariable Long playerId,
                                       @Valid @RequestBody TransferPlacementDTO transferPlacementDTO) {
         playerService.placePlayerOnTransfer(auth.getUserId(), playerId, transferPlacementDTO.getPrice());
     }
 
-    @PostMapping("/v1/player/{playerId}/buy")
+    @PostMapping("/v1/user/player/{playerId}/buy")
     public void buyPlayer(FantasyAuthToken auth,
                           @PathVariable Long playerId) {
         playerService.buyPlayer(auth.getUserId(), playerId);

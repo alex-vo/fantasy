@@ -19,12 +19,12 @@ public class AccountController {
 
     private final UserService userService;
 
-    @PostMapping("/v1/account/signup")
+    @PostMapping("/v1/user/account/signup")
     public void signup(@Valid @RequestBody NewUserDTO newUserDTO) {
         userService.createUser(newUserDTO);
     }
 
-    @PostMapping("/v1/account/login")
+    @PostMapping("/v1/user/account/login")
     public TokenDTO login(@Valid @RequestBody UserDTO userDTO) {
         return userService.signIn(userDTO);
     }

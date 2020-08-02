@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @ToString(exclude = "team")
 public class Player {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
     Long id;
     @Column(nullable = false)
     String firstName;

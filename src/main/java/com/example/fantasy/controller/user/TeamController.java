@@ -17,12 +17,12 @@ public class TeamController {
 
     private final TeamService teamService;
 
-    @GetMapping("/v1/team")
+    @GetMapping("/v1/user/team")
     public TeamDTO getTeamInfo(FantasyAuthToken auth) {
         return teamService.getTeamInfo(auth.getUserId());
     }
 
-    @PutMapping("/v1/team/{teamId}")
+    @PutMapping("/v1/user/team/{teamId}")
     public void updateTeamInfo(FantasyAuthToken auth,
                                @PathVariable Long teamId,
                                @Valid @RequestBody UpdateTeamDTO updateTeamDTO) {

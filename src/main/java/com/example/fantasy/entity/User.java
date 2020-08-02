@@ -13,7 +13,7 @@ import javax.persistence.*;
 @ToString(exclude = "team")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     Long id;
     @Column(nullable = false)
     Role role;
