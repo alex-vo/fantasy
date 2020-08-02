@@ -44,7 +44,9 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
             "where p.id = ?1 and p.team in (select t from Team t where t.owner.id = ?2)")
     int placePlayerOnTransfer(Long id, Long ownerId, BigDecimal price);
 
-    @Query("from Player p where p.id = ?1 and p.isOnTransfer = true")
+    @Query("from Player p " +
+            "join fetch p.team t " +
+            "where p.id = ?1 and p.isOnTransfer = true")
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Player> findPlayerOnTransferById(Long id);
 

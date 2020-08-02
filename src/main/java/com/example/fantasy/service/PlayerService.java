@@ -61,15 +61,18 @@ public class PlayerService {
                 .orElseThrow(NotFoundException::new);
         Player player = playerRepository.findPlayerOnTransferById(playerId)
                 .orElseThrow(NotFoundException::new);
-        ensureBuyerHasEnoughBalance(buyer, player.getTransferPrice());
+        ensureBuyerCanPerformOperation(buyer, player);
         teamRepository.topUpBalance(player.getTeam().getId(), player.getTransferPrice());
         teamRepository.reduceBalance(buyer.getTeam().getId(), player.getTransferPrice());
         playerRepository.performTransfer(playerId, buyer.getTeam(),
                 BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10, 101)).multiply(player.getValue()));
     }
 
-    private void ensureBuyerHasEnoughBalance(User buyer, BigDecimal price) {
-        if (buyer.getTeam().getBalance().compareTo(price) < 0) {
+    private void ensureBuyerCanPerformOperation(User buyer, Player player) {
+        if (buyer.getTeam().equals(player.getTeam())) {
+            throw new BadRequestException("cannot buy players from own team");
+        }
+        if (buyer.getTeam().getBalance().compareTo(player.getTransferPrice()) < 0) {
             throw new BadRequestException("not enough funds");
         }
     }
