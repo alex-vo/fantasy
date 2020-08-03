@@ -32,13 +32,13 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     Page<PlayerModel> findPlayersOnTransfer(String country, String teamName, String playerLastName,
                                             BigDecimal valueMin, BigDecimal valueMax, Pageable pageable);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     @Query("update Player p set p.firstName = ?3, p.lastName = ?4, p.country = ?5 " +
             "where p.id in (select p.id from Player p where p.id = ?1 and p.team.owner.id = ?2)")
     int updatePlayerInformation(Long id, Long ownerId, String firstName, String lastName, String country);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Transactional
     @Query("update Player p set p.isOnTransfer = true, p.transferPrice = ?3 " +
             "where p.id = ?1 and p.team in (select t from Team t where t.owner.id = ?2) " +
@@ -51,7 +51,7 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Player> findPlayerOnTransferById(Long id);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("update Player p set p.team = ?2, p.isOnTransfer = false, p.transferPrice = null, p.value = ?3 where p.id = ?1")
     void performTransfer(Long id, Team team, BigDecimal newValue);
 

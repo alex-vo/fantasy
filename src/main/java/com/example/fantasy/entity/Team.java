@@ -26,10 +26,17 @@ public class Team {
     @Column(nullable = false)
     String country;
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    List<Player> players = new ArrayList<>();
+    List<Player> players;
     @OneToOne(mappedBy = "team", optional = false)
     User owner;
     @Column(nullable = false)
     @Min(0)
     BigDecimal balance;
+
+    public void addPlayer(Player p) {
+        if (players == null) {
+            players = new ArrayList<>();
+        }
+        players.add(p);
+    }
 }

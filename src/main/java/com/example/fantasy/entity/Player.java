@@ -44,6 +44,6 @@ public class Player {
 
     public void setTeam(Team team) {
         this.team = team;
-        team.getPlayers().add(this);
+        team.addPlayer(this);
     }
 }

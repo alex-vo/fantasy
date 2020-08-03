@@ -34,6 +34,57 @@ dependencies {
 
 }
 
-test {
+sourceSets {
+    unit {
+        java.srcDir 'src/test/unit/java'
+        resources.srcDir 'src/test/resources'
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+
+    integration {
+        java.srcDir 'src/test/integration/java'
+        resources.srcDir 'src/test/resources'
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+
+    e2e {
+        java.srcDir 'src/test/e2e/java'
+        resources.srcDir 'src/test/resources'
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    integrationImplementation.extendsFrom testImplementation
+    unitImplementation.extendsFrom testImplementation
+    unitCompileOnly.extendsFrom testCompileOnly
+    unitAnnotationProcessor.extendsFrom testAnnotationProcessor
+    e2eImplementation.extendsFrom testImplementation
+}
+
+task testUnit(type: Test, group: 'verification') {
+    testClassesDirs = sourceSets.unit.output.classesDirs
+    classpath = sourceSets.unit.runtimeClasspath
     useJUnitPlatform()
+}
+
+task testIntegration(type: Test, group: 'verification') {
+    testClassesDirs = sourceSets.integration.output.classesDirs
+    classpath = sourceSets.integration.runtimeClasspath
+    useJUnitPlatform()
+}
+
+task testE2E(type: Test, group: 'verification') {
+    testClassesDirs = sourceSets.e2e.output.classesDirs
+    classpath = sourceSets.e2e.runtimeClasspath
+    useJUnitPlatform()
+}
+
+test {
+    dependsOn testUnit
+    dependsOn testIntegration
+    dependsOn testE2E
 }
