@@ -34,7 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (jwt != null && jwtTokenUtil.validateJwtToken(jwt)) {
                 String email = jwtTokenUtil.getEmailFromJwtToken(jwt);
 
-                User user = userRepository.findByEmail(email)
+                User user = userRepository.findNonBlockedByEmail(email)
                         .orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
                 SecurityContextHolder.getContext().setAuthentication(new FantasyAuthToken(

@@ -13,6 +13,7 @@ public interface UserMapper {
     @Mapping(target = "passwordHash", ignore = true)
     @Mapping(target = "team", ignore = true)
     @Mapping(target = "role", constant = "ROLE_USER")
+    @Mapping(target = "failedLoginAttempts", constant = "0")
     User toUser(NewUserDTO newUserDTO, @Context PasswordEncoder passwordEncoder);
 
     @AfterMapping

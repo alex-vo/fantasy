@@ -23,6 +23,8 @@ public class User {
     String passwordHash;
     @Column(nullable = false)
     Boolean blocked;
+    @Column(nullable = false)
+    Integer failedLoginAttempts;
     @OneToOne(cascade = CascadeType.ALL)
     Team team;
 

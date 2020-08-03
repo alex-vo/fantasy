@@ -44,6 +44,7 @@ public class StartupService {
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(password));
         user.setBlocked(false);
+        user.setFailedLoginAttempts(0);
         user.setRole(role);
         return user;
     }

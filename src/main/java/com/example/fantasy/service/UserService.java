@@ -13,7 +13,6 @@ import com.example.fantasy.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -41,10 +40,13 @@ public class UserService {
     private final JwtTokenUtil jwtTokenUtil;
 
     public TokenDTO login(UserDTO userDTO) {
-        String passwordHash = userRepository.findPasswordHashByEmail(userDTO.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException(""));
-        if (!passwordEncoder.matches(userDTO.getPassword(), passwordHash)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "wrong password");
+        User user = userRepository.findNonBlockedByEmail(userDTO.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        if (!passwordEncoder.matches(userDTO.getPassword(), user.getPasswordHash())) {
+            userRepository.updateFailedLoginAttemptsCount(user.getId(), user.getFailedLoginAttempts() + 1);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong password");
+        } else if (user.getFailedLoginAttempts() > 0) {
+            userRepository.updateFailedLoginAttemptsCount(user.getId(), 0);
         }
 
         return new TokenDTO(jwtTokenUtil.generateJwtToken(userDTO.getEmail()));
