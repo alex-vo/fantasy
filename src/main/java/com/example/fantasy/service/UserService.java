@@ -40,7 +40,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
-    public TokenDTO signIn(UserDTO userDTO) {
+    public TokenDTO login(UserDTO userDTO) {
         String passwordHash = userRepository.findPasswordHashByEmail(userDTO.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException(""));
         if (!passwordEncoder.matches(userDTO.getPassword(), passwordHash)) {

@@ -15,3 +15,7 @@ jwt:
 server:
   error:
     include-message: always
+
+#logging:
+#  level:
+#    root: debug

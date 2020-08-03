@@ -26,7 +26,7 @@ public class AccountController {
 
     @PostMapping("/v1/user/account/login")
     public TokenDTO login(@Valid @RequestBody UserDTO userDTO) {
-        return userService.signIn(userDTO);
+        return userService.login(userDTO);
     }
 
 }

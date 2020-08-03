@@ -41,12 +41,13 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     @Modifying
     @Transactional
     @Query("update Player p set p.isOnTransfer = true, p.transferPrice = ?3 " +
-            "where p.id = ?1 and p.team in (select t from Team t where t.owner.id = ?2)")
+            "where p.id = ?1 and p.team in (select t from Team t where t.owner.id = ?2) " +
+            "and p.isOnTransfer = false and p.transferPrice is null")
     int placePlayerOnTransfer(Long id, Long ownerId, BigDecimal price);
 
     @Query("from Player p " +
             "join fetch p.team t " +
-            "where p.id = ?1 and p.isOnTransfer = true")
+            "where p.id = ?1 and p.isOnTransfer = true and p.transferPrice is not null")
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Player> findPlayerOnTransferById(Long id);
 

@@ -7,6 +7,7 @@ import com.example.fantasy.model.TeamModel;
 import lombok.Builder;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public class TeamDTOMapperTest {
 
     @Test
     public void testTeamDTOMapping() {
-        TeamDTOMapper m = new TeamDTOMapperImpl();
+        TeamDTOMapper m = Mappers.getMapper(TeamDTOMapper.class);
         TestTeamModel teamModel = TestTeamModel.builder()
                 .id(140L)
                 .country("England")
@@ -58,6 +59,7 @@ public class TeamDTOMapperTest {
         LocalDate dateOfBirth;
         BigDecimal value;
         Boolean isOnTransfer;
+        BigDecimal transferPrice;
         PlayerPosition position;
     }
 

@@ -20,8 +20,8 @@ public class StartupService {
 
     @EventListener
     public void appReady(ApplicationStartedEvent e) {
-        User user = prepareUser("aa@bb.lv", "123", Role.ROLE_USER);
-        User admin = prepareUser("admin@admin.lv", "123", Role.ROLE_ADMIN);
+        User user = prepareUser("aa@bb.lv", "12345", Role.ROLE_USER);
+        User admin = prepareUser("admin@admin.lv", "12345", Role.ROLE_ADMIN);
 
         Team team = prepareTeam("MU", "England");
         user.setTeam(team);
@@ -56,7 +56,7 @@ public class StartupService {
         player.setCountry(country);
         player.setDateOfBirth(dateOfBirth);
         player.setValue(value);
-        player.setIsOnTransfer(true);
+        player.setIsOnTransfer(false);
         player.setPosition(position);
         player.setTeam(team);
         return player;

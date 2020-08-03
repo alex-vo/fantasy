@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -18,5 +17,6 @@ public class PlayerDTO {
     Integer age;
     BigDecimal value;
     Boolean isOnTransfer;
+    BigDecimal transferPrice;
     PlayerPosition position;
 }

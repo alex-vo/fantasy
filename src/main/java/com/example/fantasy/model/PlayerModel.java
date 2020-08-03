@@ -20,5 +20,7 @@ public interface PlayerModel {
 
     Boolean getIsOnTransfer();
 
+    BigDecimal getTransferPrice();
+
     PlayerPosition getPosition();
 }
