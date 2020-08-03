@@ -72,7 +72,7 @@ public class UserService {
                     Player p = new Player();
                     p.setFirstName(RandomStringUtils.randomAlphabetic(5));
                     p.setLastName(RandomStringUtils.randomAlphabetic(5));
-                    p.setCountry("England");
+                    p.setCountry(country);
                     long birthDateEpochDay = threadLocalRandom.nextLong(fortyYearsAgo, eighteenYearsAgo);
                     p.setDateOfBirth(LocalDate.ofEpochDay(birthDateEpochDay));
                     p.setValue(BigDecimal.valueOf(1_000_000));

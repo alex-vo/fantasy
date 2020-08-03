@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -64,8 +65,8 @@ public class PlayerService {
         ensureBuyerCanPerformOperation(buyer, player);
         teamRepository.updateBalance(player.getTeam().getId(), player.getTeam().getBalance().add(player.getTransferPrice()));
         teamRepository.updateBalance(buyer.getTeam().getId(), buyer.getTeam().getBalance().subtract(player.getTransferPrice()));
-        playerRepository.performTransfer(playerId, buyer.getTeam(),
-                BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10, 101)).multiply(player.getValue()));
+        playerRepository.performTransfer(playerId, buyer.getTeam(), BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10, 101))
+                .divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN).add(BigDecimal.ONE).multiply(player.getValue()));
     }
 
     private void ensureBuyerCanPerformOperation(User buyer, Player player) {
