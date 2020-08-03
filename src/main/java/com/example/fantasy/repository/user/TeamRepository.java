@@ -5,7 +5,6 @@ import com.example.fantasy.model.TeamModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -16,23 +15,17 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     @Query("select t " +
             "from Team t " +
             "join fetch t.players p " +
-            "where t.owner.id = :ownerId")
-    Optional<TeamModel> findByOwnerId(@Param("ownerId") Long ownerId);
+            "where t.owner.id = ?1")
+    Optional<TeamModel> findByOwnerId(Long ownerId);
 
     @Modifying
     @Transactional
-    @Query("update Team t set t.name = :name, t.country = :country " +
-            "where t.id = (select t.id from Team t where t.id = :id and t.owner.id = :ownerId)")
-    int updateTeamInformation(@Param("id") Long id, @Param("ownerId") Long ownerId, @Param("name") String name,
-                              @Param("country") String country);
+    @Query("update Team t set t.name = ?3, t.country = ?4 " +
+            "where t.id = (select t.id from Team t where t.id = ?1 and t.owner.id = ?2)")
+    int updateTeamInformation(Long id, Long ownerId, String name, String country);
 
     @Modifying
-    @Query("update Team t set t.balance = t.balance + :sum where t.id = :id")
-    int topUpBalance(@Param("id") Long id, @Param("sum") BigDecimal sum);
-
-    //TODO maybe make idempotent?
-    @Modifying
-    @Query("update Team t set t.balance = t.balance - :sum where t.id = :id")
-    int reduceBalance(@Param("id") Long id, @Param("sum") BigDecimal sum);
+    @Query("update Team t set t.balance = ?2 where t.id = ?1")
+    int updateBalance(Long id, BigDecimal sum);
 
 }

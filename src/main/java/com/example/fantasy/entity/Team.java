@@ -7,6 +7,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,5 +30,6 @@ public class Team {
     @OneToOne(mappedBy = "team", optional = false)
     User owner;
     @Column(nullable = false)
+    @Min(0)
     BigDecimal balance;
 }

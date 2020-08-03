@@ -62,8 +62,8 @@ public class PlayerService {
         Player player = playerRepository.findPlayerOnTransferById(playerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         ensureBuyerCanPerformOperation(buyer, player);
-        teamRepository.topUpBalance(player.getTeam().getId(), player.getTransferPrice());
-        teamRepository.reduceBalance(buyer.getTeam().getId(), player.getTransferPrice());
+        teamRepository.updateBalance(player.getTeam().getId(), player.getTeam().getBalance().add(player.getTransferPrice()));
+        teamRepository.updateBalance(buyer.getTeam().getId(), buyer.getTeam().getBalance().subtract(player.getTransferPrice()));
         playerRepository.performTransfer(playerId, buyer.getTeam(),
                 BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(10, 101)).multiply(player.getValue()));
     }

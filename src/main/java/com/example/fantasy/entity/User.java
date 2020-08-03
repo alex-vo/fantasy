@@ -6,6 +6,8 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
@@ -18,20 +20,16 @@ public class User {
     @Column(nullable = false)
     Role role;
     @Column(nullable = false, unique = true)
+    @NotBlank
     String email;
     @Column(nullable = false)
+    @NotBlank
     String passwordHash;
     @Column(nullable = false)
     Boolean blocked;
     @Column(nullable = false)
+    @Min(0)
     Integer failedLoginAttempts;
     @OneToOne(cascade = CascadeType.ALL)
     Team team;
-
-    public void setTeam(Team team) {
-        this.team = team;
-        if (team != null) {
-            team.setOwner(this);
-        }
-    }
 }
