@@ -1,0 +1,10 @@
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "country": "England",
+  "dateOfBirth": "1990-01-01",
+  "value": 1000000.00,
+  "isOnTransfer": false,
+  "transferPrice": null,
+  "position": "ATTACKER"
+}

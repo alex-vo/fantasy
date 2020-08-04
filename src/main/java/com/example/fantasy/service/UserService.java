@@ -56,13 +56,14 @@ public class UserService {
 
     public void createUser(NewUserDTO newUserDTO) {
         User user = userMapper.toUser(newUserDTO, passwordEncoder);
-        Team team = createInitialTeam(newUserDTO.getTeamName(), newUserDTO.getCountry());
+        Team team = createInitialTeam(user, newUserDTO.getTeamName(), newUserDTO.getCountry());
         user.setTeam(team);
         userRepository.save(user);
     }
 
-    private Team createInitialTeam(String teamName, String country) {
+    private Team createInitialTeam(User owner, String teamName, String country) {
         Team team = new Team();
+        team.setOwner(owner);
         team.setName(teamName);
         team.setCountry(country);
         team.setBalance(TEAM_INITIAL_BALANCE);

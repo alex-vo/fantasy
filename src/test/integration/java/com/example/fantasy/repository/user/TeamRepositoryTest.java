@@ -35,6 +35,7 @@ public class TeamRepositoryTest {
         PlayerFixture.preparePlayer(team, "John", "Doe", "England", LocalDate.of(2000, 1, 1), BigDecimal.valueOf(1000), PlayerPosition.DEFENDER);
         PlayerFixture.preparePlayer(team, "John1", "Doe1", "England", LocalDate.of(2001, 1, 1), BigDecimal.valueOf(2000), PlayerPosition.ATTACKER);
         owner.setTeam(team);
+        team.setOwner(owner);
         owner = userRepository.save(owner);
     }
 

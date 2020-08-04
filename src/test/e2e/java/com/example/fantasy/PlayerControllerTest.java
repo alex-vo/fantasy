@@ -82,7 +82,9 @@ public class PlayerControllerTest extends E2ETest {
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.isOnTransfer", is(true)));
 
-        //todo list
+        mvc.perform(get("/v1/user/player/list-transfer").header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.content[0].id", is(playerId)));
     }
 
     private TransferPlacementDTO prepareTransferPlacementDTO(BigDecimal price) {

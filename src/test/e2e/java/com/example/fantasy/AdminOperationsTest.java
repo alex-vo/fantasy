@@ -59,6 +59,52 @@ public class AdminOperationsTest extends E2ETest {
                 .andExpect(status().is(204));
         mvc.perform(get("/v1/admin/users/" + userId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
                 .andExpect(status().is(404));
+        mvc.perform(get("/v1/admin/teams/" + teamId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(404));
+    }
+
+    @Test
+    public void shouldPerformPlayerCruds() throws Exception {
+        Integer playerId = extractCreatedId(mvc.perform(post("/v1/admin/players").header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Files.readString(Path.of("src/test/resources/new_player.json"))))
+                .andExpect(status().is(201)).andReturn().getResponse());
+        mvc.perform(get("/v1/admin/players/" + playerId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.id", is(playerId)));
+        mvc.perform(patch("/v1/admin/players/" + playerId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Files.readString(Path.of("src/test/resources/patch_player.json"))))
+                .andExpect(status().is(204));
+        mvc.perform(get("/v1/admin/players/" + playerId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.firstName", is("Steve")));
+        mvc.perform(delete("/v1/admin/players/" + playerId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(204));
+        mvc.perform(get("/v1/admin/players/" + playerId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(404));
+    }
+
+    @Test
+    public void shouldPerformTeamCruds() throws Exception {
+        Integer teamId = extractCreatedId(mvc.perform(post("/v1/admin/teams").header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Files.readString(Path.of("src/test/resources/new_team.json"))))
+                .andExpect(status().is(201)).andReturn().getResponse());
+        mvc.perform(get("/v1/admin/teams/" + teamId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.id", is(teamId)));
+        mvc.perform(patch("/v1/admin/teams/" + teamId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Files.readString(Path.of("src/test/resources/patch_team.json"))))
+                .andExpect(status().is(204));
+        mvc.perform(get("/v1/admin/teams/" + teamId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.name", is("Cardiff City")));
+        mvc.perform(delete("/v1/admin/teams/" + teamId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(204));
+        mvc.perform(get("/v1/admin/teams/" + teamId).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminAccessToken))
+                .andExpect(status().is(404));
     }
 
     private Integer extractCreatedId(MockHttpServletResponse response) {

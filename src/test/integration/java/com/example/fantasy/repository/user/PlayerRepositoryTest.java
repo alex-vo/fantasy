@@ -42,6 +42,7 @@ public class PlayerRepositoryTest {
         owner = UserFixture.prepareUser(email);
         Team team = TeamFixture.prepareTeam(teamName, country, BigDecimal.valueOf(5_000_000));
         owner.setTeam(team);
+        team.setOwner(owner);
         owner = userRepository.save(owner);
         return owner;
     }

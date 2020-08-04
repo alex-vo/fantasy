@@ -33,7 +33,7 @@ public class Player {
     @Column(nullable = false)
     @Min(1)
     BigDecimal value;
-    @ManyToOne(optional = false)
+    @ManyToOne/*(optional = false)*/
     Team team;
     @Column(nullable = false)
     Boolean isOnTransfer;
