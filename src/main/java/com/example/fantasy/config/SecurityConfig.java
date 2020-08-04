@@ -32,29 +32,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/v1/admin/**").hasAuthority("ROLE_ADMIN")
                 .and()
-//                .authorizeRequests().antMatchers("/v1/admin/**").hasAuthority("ADMIN")
-//                .and()
-//                .authorizeRequests().antMatchers("/**").authenticated()
-//                .antMatchers("/v1/account/**").anonymous()
-//                .and()
-//                .cors().and()
                 .csrf().disable();
     }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(jwtUserDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public JwtRequestFilter authenticationJwtTokenFilter() {
-//        return new JwtRequestFilter();
-//    }
 
 }

@@ -31,8 +31,6 @@ public class E2ETest {
 
     String accessToken;
 
-//    static boolean initializationDone = false;
-
     protected String getUserEmail() {
         return null;
     }
@@ -45,7 +43,6 @@ public class E2ETest {
 
         TokenDTO tokenDTO = signUpAndLogin(getUserEmail(), "Qwerty123");
         accessToken = tokenDTO.getAccessToken();
-//        initializationDone = true;
     }
 
     protected TokenDTO signUpAndLogin(String email, String password) throws Exception {
