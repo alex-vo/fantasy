@@ -27,7 +27,9 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class UserService {
 
-    private static final Map<PlayerPosition, Integer> TEAM_CONFIG = Map.of(
+    public static final BigDecimal PLAYER_INITIAL_VALUE = BigDecimal.valueOf(1_000_000);
+    public static final BigDecimal TEAM_INITIAL_BALANCE = BigDecimal.valueOf(5_000_000);
+    public static final Map<PlayerPosition, Integer> TEAM_CONFIG = Map.of(
             PlayerPosition.GOALKEEPER, 3,
             PlayerPosition.DEFENDER, 6,
             PlayerPosition.MIDFIELDER, 6,
@@ -63,24 +65,27 @@ public class UserService {
         Team team = new Team();
         team.setName(teamName);
         team.setCountry(country);
-        team.setBalance(BigDecimal.valueOf(5_000_000));
+        team.setBalance(TEAM_INITIAL_BALANCE);
         long eighteenYearsAgo = LocalDate.now().minusYears(18).toEpochDay();
         long fortyYearsAgo = LocalDate.now().minusYears(40).toEpochDay();
         ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
         TEAM_CONFIG.forEach((position, amount) -> IntStream.range(0, amount)
-                .forEach(v -> {
-                    Player p = new Player();
-                    p.setFirstName(RandomStringUtils.randomAlphabetic(5));
-                    p.setLastName(RandomStringUtils.randomAlphabetic(5));
-                    p.setCountry(country);
-                    long birthDateEpochDay = threadLocalRandom.nextLong(fortyYearsAgo, eighteenYearsAgo);
-                    p.setDateOfBirth(LocalDate.ofEpochDay(birthDateEpochDay));
-                    p.setValue(BigDecimal.valueOf(1_000_000));
-                    p.setIsOnTransfer(false);
-                    p.setPosition(position);
-                    p.setTeam(team);
-                }));
+                .forEach(v -> createPlayer(country, team, eighteenYearsAgo, fortyYearsAgo, threadLocalRandom, position)));
         return team;
+    }
+
+    private void createPlayer(String country, Team team, long eighteenYearsAgo, long fortyYearsAgo,
+                              ThreadLocalRandom threadLocalRandom, PlayerPosition position) {
+        Player p = new Player();
+        p.setFirstName(RandomStringUtils.randomAlphabetic(5));
+        p.setLastName(RandomStringUtils.randomAlphabetic(5));
+        p.setCountry(country);
+        long birthDateEpochDay = threadLocalRandom.nextLong(fortyYearsAgo, eighteenYearsAgo);
+        p.setDateOfBirth(LocalDate.ofEpochDay(birthDateEpochDay));
+        p.setValue(PLAYER_INITIAL_VALUE);
+        p.setIsOnTransfer(false);
+        p.setPosition(position);
+        p.setTeam(team);
     }
 
 }

@@ -19,7 +19,6 @@ public interface UserMapper {
     @AfterMapping
     default void completeUserMapping(@MappingTarget User user, @Context PasswordEncoder passwordEncoder, NewUserDTO newUserDTO) {
         user.setPasswordHash(passwordEncoder.encode(newUserDTO.getPassword()));
-        user.setPasswordHash(passwordEncoder.encode(newUserDTO.getPassword()));
     }
 
 }
