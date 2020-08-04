@@ -30,6 +30,6 @@ public class User {
     @Column(nullable = false)
     @Min(0)
     Integer failedLoginAttempts;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
     Team team;
 }

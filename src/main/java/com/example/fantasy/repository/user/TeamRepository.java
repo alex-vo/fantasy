@@ -14,7 +14,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     @Query("select t " +
             "from Team t " +
-            "join fetch t.players p " +
+            "left join fetch t.players p " +
             "where t.owner.id = ?1")
     Optional<TeamModel> findByOwnerId(Long ownerId);
 
