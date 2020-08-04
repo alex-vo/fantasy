@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Override
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select u from User u " +
-            "join fetch u.team t " +
+            "left join fetch u.team t " +
             "where u.id = ?1")
     Optional<User> findById(Long id);
 

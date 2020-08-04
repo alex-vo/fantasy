@@ -73,7 +73,7 @@ public class TeamRepositoryTest {
 
     @Test
     public void shouldUpdateTeamInformation() {
-        int updatedRows = teamRepository.updateTeamInformation(owner.getTeam().getId(), owner.getId(), "Real Madrid", "Spain");
+        int updatedRows = teamRepository.updateTeamInformation(owner.getId(), "Real Madrid", "Spain");
 
         assertThat(updatedRows, is(1));
         assertThat(teamRepository.findById(owner.getTeam().getId()).orElseThrow(), allOf(
@@ -84,7 +84,7 @@ public class TeamRepositoryTest {
 
     @Test
     public void shouldFailToUpdateOtherTeamInformation() {
-        int updatedRows = teamRepository.updateTeamInformation(owner.getTeam().getId() + 1, owner.getId(), "Real Madrid", "Spain");
+        int updatedRows = teamRepository.updateTeamInformation(owner.getId() + 1, "Real Madrid", "Spain");
 
         assertThat(updatedRows, is(0));
     }

@@ -56,11 +56,11 @@ public class TeamServiceTest {
 
     @Test
     public void shouldFailToUpdateTeam() {
-        when(teamRepository.updateTeamInformation(4L, 4L, "Juventus", "Italy")).thenReturn(0);
+        when(teamRepository.updateTeamInformation(4L, "Juventus", "Italy")).thenReturn(0);
         UpdateTeamDTO updateTeamDTO = prepareUpdateTeamDTO("Juventus", "Italy");
 
         try {
-            teamService.updateTeam(4L, 4L, updateTeamDTO);
+            teamService.updateTeam(4L, updateTeamDTO);
         } catch (ResponseStatusException e) {
             assertThat(e.getStatus(), is(HttpStatus.BAD_REQUEST));
             assertThat(e.getReason(), is("failed to update team information"));
@@ -69,10 +69,10 @@ public class TeamServiceTest {
 
     @Test
     public void shouldUpdateTeam() {
-        when(teamRepository.updateTeamInformation(4L, 4L, "Juventus", "Italy")).thenReturn(1);
+        when(teamRepository.updateTeamInformation(4L, "Juventus", "Italy")).thenReturn(1);
         UpdateTeamDTO updateTeamDTO = prepareUpdateTeamDTO("Juventus", "Italy");
 
-        teamService.updateTeam(4L, 4L, updateTeamDTO);
+        teamService.updateTeam(4L, updateTeamDTO);
     }
 
     private UpdateTeamDTO prepareUpdateTeamDTO(String name, String country) {

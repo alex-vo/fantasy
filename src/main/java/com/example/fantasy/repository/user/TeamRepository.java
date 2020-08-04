@@ -20,9 +20,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     @Modifying(clearAutomatically = true)
     @Transactional
-    @Query("update Team t set t.name = ?3, t.country = ?4 " +
-            "where t.id = (select t.id from Team t where t.id = ?1 and t.owner.id = ?2)")
-    int updateTeamInformation(Long id, Long ownerId, String name, String country);
+    @Query("update Team t set t.name = ?2, t.country = ?3 " +
+            "where t.id = (select t.id from Team t where t.owner.id = ?1)")
+    int updateTeamInformation(Long ownerId, String name, String country);
 
     @Modifying(clearAutomatically = true)
     @Query("update Team t set t.balance = ?2 where t.id = ?1")

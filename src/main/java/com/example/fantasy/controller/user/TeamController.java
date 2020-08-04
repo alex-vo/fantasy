@@ -6,7 +6,10 @@ import com.example.fantasy.dto.UpdateTeamDTO;
 import com.example.fantasy.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -22,11 +25,10 @@ public class TeamController {
         return teamService.getTeamInfo(auth.getUserId());
     }
 
-    @PutMapping("/v1/user/team/{teamId}")
+    @PutMapping("/v1/user/team")
     public void updateTeamInfo(FantasyAuthToken auth,
-                               @PathVariable Long teamId,
                                @Valid @RequestBody UpdateTeamDTO updateTeamDTO) {
-        teamService.updateTeam(auth.getUserId(), teamId, updateTeamDTO);
+        teamService.updateTeam(auth.getUserId(), updateTeamDTO);
     }
 
 }

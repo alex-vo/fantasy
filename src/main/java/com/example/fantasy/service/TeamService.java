@@ -23,8 +23,8 @@ public class TeamService {
         return teamDTOMapper.toTeamDTO(team);
     }
 
-    public void updateTeam(Long ownerId, Long teamId, UpdateTeamDTO updateTeamDTO) {
-        int updatedRows = teamRepository.updateTeamInformation(teamId, ownerId, updateTeamDTO.getName(),
+    public void updateTeam(Long ownerId, UpdateTeamDTO updateTeamDTO) {
+        int updatedRows = teamRepository.updateTeamInformation(ownerId, updateTeamDTO.getName(),
                 updateTeamDTO.getCountry());
         if (updatedRows != 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "failed to update team information");

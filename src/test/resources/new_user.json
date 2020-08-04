@@ -1,0 +1,7 @@
+{
+  "role": "ROLE_USER",
+  "email": "user50@abc.com",
+  "passwordHash": "$2a$10$j95upKpD/NtXyNpQFxRoF.ZNm/D/Qc/Y7x01veUt5NPYUpMcOR1Eq",
+  "blocked": false,
+  "failedLoginAttempts": 0
+}

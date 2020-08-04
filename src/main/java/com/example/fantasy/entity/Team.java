@@ -27,7 +27,7 @@ public class Team {
     String country;
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     List<Player> players;
-    @OneToOne(mappedBy = "team", optional = false)
+    @OneToOne
     User owner;
     @Column(nullable = false)
     @Min(0)

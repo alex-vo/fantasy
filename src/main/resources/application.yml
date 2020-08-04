@@ -16,6 +16,10 @@ server:
   error:
     include-message: always
 
+admin:
+  username: admin@abc.com
+  password: Qwerty123
+
 #logging:
 #  level:
 #    root: debug

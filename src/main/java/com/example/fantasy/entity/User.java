@@ -30,6 +30,6 @@ public class User {
     @Column(nullable = false)
     @Min(0)
     Integer failedLoginAttempts;
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL)
     Team team;
 }
