@@ -14,13 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 @DataJpaTest
 public class PlayerRepositoryTest {
@@ -29,6 +37,11 @@ public class PlayerRepositoryTest {
     UserRepository userRepository;
     @Autowired
     PlayerRepository playerRepository;
+
+    @Autowired
+    TransactionTemplate transactionTemplate;
+    @Autowired
+    EntityManager entityManager;
 
     Team team;
     User owner;
@@ -101,6 +114,7 @@ public class PlayerRepositoryTest {
                 BigDecimal.valueOf(3000), PlayerPosition.GOALKEEPER, true, BigDecimal.valueOf(123)));
 
         int result = playerRepository.updatePlayerInformation(p.getId(), owner.getId(), "John", "Doe", "England");
+        entityManager.clear();
 
         assertThat(result, is(1));
         assertThat(playerRepository.findById(p.getId()).orElseThrow(), allOf(
@@ -116,6 +130,7 @@ public class PlayerRepositoryTest {
                 BigDecimal.valueOf(3000), PlayerPosition.GOALKEEPER, false, null));
 
         int result = playerRepository.placePlayerOnTransfer(p.getId(), owner.getId(), BigDecimal.valueOf(111));
+        entityManager.clear();
 
         assertThat(result, is(1));
         assertThat(playerRepository.findById(p.getId()).orElseThrow(), allOf(
@@ -157,6 +172,7 @@ public class PlayerRepositoryTest {
                 BigDecimal.valueOf(3000), PlayerPosition.GOALKEEPER, true, BigDecimal.valueOf(1_000_000)));
 
         playerRepository.performTransfer(p.getId(), anotherTeam, BigDecimal.valueOf(3100));
+        entityManager.clear();
 
         assertThat(playerRepository.findById(p.getId()).orElseThrow(), allOf(
                 hasProperty("team", allOf(

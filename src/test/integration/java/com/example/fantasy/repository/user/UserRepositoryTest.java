@@ -6,14 +6,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.persistence.EntityManager;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 @DataJpaTest
 public class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Test
     public void shouldFindUserById() {
@@ -45,6 +53,7 @@ public class UserRepositoryTest {
         user = userRepository.save(user);
 
         userRepository.updateFailedLoginAttemptsCount(user.getId(), 150);
+        entityManager.clear();
 
         assertThat(userRepository.findById(user.getId()).orElseThrow(), allOf(
                 hasProperty("failedLoginAttempts", is(150)),
@@ -58,6 +67,7 @@ public class UserRepositoryTest {
         user = userRepository.save(user);
 
         userRepository.updateFailedLoginAttemptsCount(user.getId(), 2);
+        entityManager.clear();
 
         assertThat(userRepository.findById(user.getId()).orElseThrow(), allOf(
                 hasProperty("failedLoginAttempts", is(2)),

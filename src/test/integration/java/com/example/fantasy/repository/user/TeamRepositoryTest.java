@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -25,6 +26,9 @@ public class TeamRepositoryTest {
     UserRepository userRepository;
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    EntityManager entityManager;
 
     User owner;
 
@@ -75,6 +79,7 @@ public class TeamRepositoryTest {
     @Test
     public void shouldUpdateTeamInformation() {
         int updatedRows = teamRepository.updateTeamInformation(owner.getId(), "Real Madrid", "Spain");
+        entityManager.clear();
 
         assertThat(updatedRows, is(1));
         assertThat(teamRepository.findById(owner.getTeam().getId()).orElseThrow(), allOf(
@@ -93,6 +98,7 @@ public class TeamRepositoryTest {
     @Test
     public void shouldUpdateBalance() {
         int updatedRows = teamRepository.updateBalance(owner.getTeam().getId(), BigDecimal.valueOf(150));
+        entityManager.clear();
 
         assertThat(updatedRows, is(1));
         assertThat(teamRepository.findById(owner.getTeam().getId()).orElseThrow(),

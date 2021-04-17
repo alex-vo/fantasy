@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.email = ?1 and u.blocked = false")
     Optional<User> findNonBlockedByEmail(String email);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Transactional
     @Query("update User u " +
             "set u.failedLoginAttempts = ?2, " +
